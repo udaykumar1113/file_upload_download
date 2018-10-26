@@ -41,7 +41,6 @@ public class FileUploadController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         Document savedDocument= documentService.saveDocument(doc);
         LOGGER.info("Document saved for id "+savedDocument.getId());
         return "documentUpload";
