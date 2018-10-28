@@ -11,5 +11,17 @@
         <input type="file" name="document"/>
         <input type="submit" value="upload">
     </form>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Document Name</th>
+            <th>Download</th>
+        </tr>
+        <tr th:each="document: ${documents}">
+            <td th:text="${document.id}"/>
+            <td th:text="${document.documentName}"/>
+            <td><a th:href="@{'download/'+${document.id}}">Download</a></td>
+        </tr>
+    </table>
 </body>
 </html>

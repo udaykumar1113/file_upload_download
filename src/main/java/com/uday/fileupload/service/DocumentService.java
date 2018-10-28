@@ -9,4 +9,6 @@ public interface DocumentService {
     public Document saveDocument(Document document);
 
     public List<Document> getallDocuments();
+
+    public Document getDocument(int id);
 }

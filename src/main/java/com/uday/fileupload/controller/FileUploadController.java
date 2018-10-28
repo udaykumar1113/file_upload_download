@@ -7,11 +7,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Controller
@@ -48,5 +51,20 @@ public class FileUploadController {
         LOGGER.info("Document saved for id "+savedDocument.getId());
         map.addAttribute("documents",documentService.getallDocuments());
         return "documentUpload";
+    }
+
+    @RequestMapping(value="/download/{id}")
+    public StreamingResponseBody downloadDocument(@PathVariable("id") int id, HttpServletResponse response){
+
+        Document document=documentService.getDocument(id);
+        byte[] fileData=document.getDocument();
+        /*This will make the file as a downloadable*/
+        response.setHeader("Content-Disposition","attachment;filename="+document.getDocumentName());
+
+        /*This will make the download link open content in new web tab*/
+        /*response.setHeader("Content-Disposition","attachment;filename="+document.getDocumentName());*/
+        return outputStream -> {
+            outputStream.write(fileData);
+        };
     }
 }
